@@ -34,7 +34,7 @@ function Login(){
                         
                         <span className='checkboxcontext'>Remember me</span>
                     </label>
-                    <a className='forgot password'>Forgot Password</a>
+                    <a className='forgot-password'>Forgot Password</a>
                 </div>
 
                 <button type='submit' className='submit-button'>Sign In</button>
