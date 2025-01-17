@@ -33,9 +33,35 @@ function Signup() {
             <Formik
                 initialValues={{ username: '', email: '', password: '', confirmPassword: '' }}
                 validationSchema={SignupSchema}
-                onSubmit={(values) => {
-                    console.log(values);
-                    alert('Signup successful!');
+                onSubmit={async (values, { setSubmitting }) => {
+                    
+                    try {
+                        // 发送 POST 请求到后端
+                        const response = await fetch('http://192.168.1.66:3000/api/register', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                username: values.username,
+                                email: values.email,
+                                password: values.password,
+                            }),
+                        });
+            
+                        if (!response.ok) {
+                            throw new Error(`Failed to register: ${response.message}`);
+                        }
+            
+                        const data = await response.json();
+                        alert('Signup successful!');
+                        console.log('Response from server:', data);
+                    } catch (error) {
+                        console.log(error);
+                        alert('Signup failed! Please try again.');
+                    } finally {
+                        setSubmitting(false); // 结束提交状态
+                    }
                 }}
             >
                 {({ isSubmitting }) => (
