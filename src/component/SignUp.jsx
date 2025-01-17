@@ -3,8 +3,14 @@ import '../style/signup.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import eye from '../assets/eye.png'
+import hideEye from '../assets/eye-hide.png'
 
 function Signup() {
+    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
+
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
             .min(3, 'Username must be at least 3 characters')
@@ -87,22 +93,52 @@ function Signup() {
                         </div>
 
                         <div className='form-group'>
-                            <Field
-                                type='password'
-                                name='password'
-                                placeholder='Enter your password'
-                                className='form-input'
-                            />
+                            <div className='password-container'>
+                                <Field
+                                    type={passwordVisible ? 'password' : 'text'}
+                                    name='password'
+                                    placeholder='Enter your password'
+                                    className='form-input'
+                                />
+                                <button
+                                    type='button'
+                                    onClick={() => setPasswordVisible(!passwordVisible)}
+                                    className='toggle-button'
+                                    aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+                                >
+                                    <img
+                                        src={passwordVisible ? eye : hideEye}
+                                        alt={passwordVisible ? 'Hide password' : 'Show password'}
+                                        className='toggle-icon'  
+                                    />
+                                </button>
+                            </div>
+                            
                             <ErrorMessage name='password' component='div' className='error-message' />
                         </div>
 
                         <div className='form-group'>
-                            <Field
-                                type='password'
-                                name='confirmPassword'
-                                placeholder='Confirm your password'
-                                className='form-input'
-                            />
+                            <div className='password-container'>
+                                <Field
+                                    type={confirmPasswordVisible ? 'password' : 'text'}
+                                    name='confirmPassword'
+                                    placeholder='Confirm your password'
+                                    className='form-input'
+                                />
+                                <button
+                                    type='button'
+                                    onClick={()=> setConfirmPasswordVisible(!confirmPasswordVisible)}
+                                    className='toggle-button'
+                                    aria-label={confirmPasswordVisible ? 'Hide password' : 'Show password'}
+                                >
+                                    <img 
+                                        src={confirmPasswordVisible ? eye : hideEye}
+                                        alt={confirmPasswordVisible ? 'Hide password' : 'Show password'}
+                                        className='toggle-icon'
+                                    />
+                                </button>
+                            </div>
+                            
                             <ErrorMessage name='confirmPassword' component='div' className='error-message' />
                         </div>
 

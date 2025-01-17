@@ -3,8 +3,13 @@ import '../style/login.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import eye from '../assets/eye.png';
+import hideEye from '../assets/eye-hide.png';
+import { useState } from 'react';
 
 function Login() {
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
     // Validation schema using Yup
     const LoginSchema = Yup.object().shape({
         email: Yup.string()
@@ -40,7 +45,22 @@ function Login() {
                         </div>
                         
                         <div className='form-group'>
-                            <Field type='password' name='password' placeholder='Enter your password' className='form-input' />
+                            <div className='password-container'>
+                                <Field type={passwordVisible ? 'password' : 'text'} name='password' placeholder='Enter your password' className='form-input' />
+                                <button
+                                    type='button'
+                                    onClick={() => setPasswordVisible(!passwordVisible)}
+                                    className='toggle-button'
+                                    aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+                                >
+                                    <img
+                                        src={passwordVisible ? eye : hideEye}
+                                        alt={passwordVisible ? 'Hide password' : 'Show password'}
+                                        className='toggle-icon'  
+                                    />
+                                </button>
+                            </div>
+                            
                             <ErrorMessage name="password" component="div" className="error-message" />
                         </div>
 
