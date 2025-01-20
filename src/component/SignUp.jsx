@@ -46,7 +46,7 @@ function Signup() {
                 onSubmit={async (values, { setSubmitting }) => {
                     
                     try {
-                        // 发送 POST 请求到后端
+                        // send POST request to backend
                         const response = await fetch(`http://${BACKEND}:3000/api/register`, {
                             method: 'POST',
                             headers: {
@@ -70,7 +70,7 @@ function Signup() {
                         console.log(error);
                         alert('Signup failed! Please try again.');
                     } finally {
-                        setSubmitting(false); // 结束提交状态
+                        setSubmitting(false); // End submitting status
                     }
                 }}
             >

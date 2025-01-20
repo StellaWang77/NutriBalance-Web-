@@ -107,6 +107,11 @@
 .submit-button:hover{
     background-color: #4377a7;
 }
+
+.submit-button:disabled{
+    cursor: not-allowed;
+}
+
 .divider {
     
     display: flex;

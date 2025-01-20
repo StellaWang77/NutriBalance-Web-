@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import eye from '../assets/eye.png';
 import hideEye from '../assets/eye-hide.png';
 import { useState } from 'react';
+const BACKEND = import.meta.env.VITE_BACKEND_IP;
 
 function Login() {
     const [passwordVisible, setPasswordVisible] = useState(true);
@@ -18,6 +19,37 @@ function Login() {
         password: Yup.string()
             .required('Password is required'),
     });
+
+    const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+        try {
+            // Send POST request to the backend
+            const response = await fetch(`http://${BACKEND}:3000/api/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert('Login successful!');
+                console.log('Response from server:', data);
+            } else {
+                // Handle backend error response
+                const errorData = await response.json();
+                setFieldError('general', errorData.message || errorData.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setFieldError('general', 'Something went wrong. Please try again later.');
+        } finally {
+            setSubmitting(false); // Stop the submission spinner
+        }
+    };
 
     return (
         <>  
@@ -32,13 +64,11 @@ function Login() {
             <Formik
                 initialValues={{ email: '', password: '', rememberMe: false }}
                 validationSchema={LoginSchema}
-                onSubmit={(values) => {
-                    console.log(values); // Handle form submission here
-                    alert('Login successful!');
-                }}
+                onSubmit={handleSubmit}
             >
-                {({ isSubmitting }) => (
+                {({ isSubmitting,errors }) => (
                     <Form className='form-container'>
+                        {errors.general && <div className="error-message">{errors.general}</div>}
                         <div className='form-group'>
                             <Field type='email' name='email' placeholder='Enter your email address' className='form-input' />
                             <ErrorMessage name="email" component="div" className="error-message" />
@@ -69,7 +99,7 @@ function Login() {
                                 <Field type='checkbox' name='rememberMe' className='checkbox' />
                                 <span className='checkboxcontext'>Remember me</span>
                             </label>
-                            <a href='/forgot-password' className='forgot-password'>Forgot Password</a>
+                            <Link to='/forgotPassword'>Forgot Password</Link>
                         </div>
 
                         <button type='submit' className='submit-button' disabled={isSubmitting}>Sign In</button>
