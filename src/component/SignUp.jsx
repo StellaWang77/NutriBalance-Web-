@@ -7,6 +7,7 @@ import { useState } from 'react';
 import eye from '../assets/eye.png'
 import hideEye from '../assets/eye-hide.png'
 
+const BACKEND = import.meta.env.VITE_BACKEND_IP;
 function Signup() {
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
@@ -19,8 +20,11 @@ function Signup() {
             .email('Invalid email address')
             .required('Email is required'),
         password: Yup.string()
-            .min(6, 'Password must be at least 6 characters')
-            .required('Password is required'),
+            .matches(
+              /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              "Password must 8 characters must include one uppercase, one lowercase, one number, one special character"
+            )
+            .required("Password is required"),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Confirm password is required'),
@@ -43,7 +47,7 @@ function Signup() {
                     
                     try {
                         // 发送 POST 请求到后端
-                        const response = await fetch('http://192.168.1.66:3000/api/register', {
+                        const response = await fetch(`http://${BACKEND}:3000/api/register`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -60,7 +64,7 @@ function Signup() {
                         }
             
                         const data = await response.json();
-                        alert('Signup successful!');
+                        alert(`${data.message}`);
                         console.log('Response from server:', data);
                     } catch (error) {
                         console.log(error);
