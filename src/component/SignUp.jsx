@@ -4,8 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import eye from '../assets/eye.png'
-import hideEye from '../assets/eye-hide.png'
+import eye from '../assets/eye.png';
+import hideEye from '../assets/eye-hide.png';
 
 const BACKEND = import.meta.env.VITE_BACKEND_IP;
 function Signup() {

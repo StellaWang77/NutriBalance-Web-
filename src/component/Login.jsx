@@ -68,10 +68,11 @@ function Login() {
             >
                 {({ isSubmitting,errors }) => (
                     <Form className='form-container'>
-                        {errors.general && <div className="error-message">{errors.general}</div>}
+                        
                         <div className='form-group'>
                             <Field type='email' name='email' placeholder='Enter your email address' className='form-input' />
                             <ErrorMessage name="email" component="div" className="error-message" />
+                            
                         </div>
                         
                         <div className='form-group'>
@@ -92,6 +93,7 @@ function Login() {
                             </div>
                             
                             <ErrorMessage name="password" component="div" className="error-message" />
+                            {errors.general && <div className="error-message">{errors.general}</div>}
                         </div>
 
                         <div className='form-options'>
