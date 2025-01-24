@@ -37,7 +37,7 @@ function ResetPassword() {
                 </div>
 
                 <Formik
-                    initialValues={{password: '', confirmPassword: '' }}
+                    initialValues={{password: '', confirmPassword: '', general: '' }}
                     validationSchema={SignupSchema}
                     onSubmit={async (values, { setSubmitting, setFieldError }) => {
                         
@@ -71,8 +71,9 @@ function ResetPassword() {
                         }
                     }}
                 >
-                    {({isSubmitting})=>(
+                    {({isSubmitting, errors})=>(
                         <Form>
+                            
                             <div className='form-group'>
                                 <div className='password-container'>
                                     <Field
@@ -121,7 +122,10 @@ function ResetPassword() {
                                 </div>
                                 
                                 <ErrorMessage name='confirmPassword' component='div' className='error-message' />
+                                {errors.general && <div className="error-message">{errors.general}</div>}
                             </div>
+
+                            
 
                             <button type='submit' className='submit-button' disabled={isSubmitting}>
                                 Reset Password
